@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chinh phục AI nhanh hơn - Luyện từ vựng HSK 4</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti cho hiệu ứng pháo hoa -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #fff1f2; /* Rose 50 */
+        }
+        .chinese-font {
+            font-family: "KaiTi", "STKaiti", "SimSun", serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ffe4e6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f43f5e;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-700 flex flex-col justify-between">
+
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 px-4 py-3">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-lg shadow-md shadow-rose-200">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-rose-600 text-base md:text-lg leading-tight">Chinh phục AI nhanh hơn</h1>
+                    <span class="text-xs text-slate-400 font-medium">Luyện từ vựng HSK 4</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <div id="score-board" class="hidden bg-rose-100 text-rose-700 px-3 py-1.5 rounded-full font-bold text-sm flex items-center space-x-1 shadow-inner">
+                    <i class="fa-solid fa-star text-amber-500"></i>
+                    <span id="current-score">0</span> điểm
+                </div>
+                <div id="timer-board" class="hidden bg-rose-100 text-rose-700 px-3 py-1.5 rounded-full font-bold text-sm flex items-center space-x-1 shadow-inner">
+                    <i class="fa-solid fa-clock text-rose-500"></i>
+                    <span id="current-time">00:00</span>
+                </div>
+                <button onclick="toggleSound()" id="sound-btn" class="w-9 h-9 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center hover:bg-rose-200 transition">
+                    <i class="fa-solid fa-volume-high" id="sound-icon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto w-full p-4 flex-grow flex flex-col justify-center my-4">
+
+        <!-- MÀN HÌNH BẮT ĐẦU -->
+        <div id="screen-welcome" class="bg-white rounded-3xl p-6 md:p-10 shadow-xl shadow-rose-100 border border-rose-100 text-center max-w-xl mx-auto w-full transition-all duration-300">
+            <div class="w-24 h-24 bg-gradient-to-tr from-rose-400 to-pink-500 rounded-full mx-auto flex items-center justify-center text-white text-4xl shadow-lg shadow-rose-300 mb-6 animate-bounce">
+                <i class="fa-solid fa-gamepad"></i>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-2">Thử thách HSK 4</h2>
+            <p class="text-slate-500 text-sm md:text-base mb-8">Vượt qua các thử thách nối tranh và điền từ nhanh nhất có thể để chinh phục AI!</p>
+            
+            <div class="space-y-4 mb-8 text-left bg-rose-50/50 p-4 rounded-2xl border border-rose-100">
+                <div class="flex items-start space-x-3">
+                    <div class="w-7 h-7 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">1</div>
+                    <div>
+                        <h3 class="font-bold text-slate-700 text-sm">Phần 1: Nối tranh với từ vựng</h3>
+                        <p class="text-xs text-slate-500">Chọn bức tranh (A-F) tương ứng với từ vựng tiếng Trung chính xác.</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <div class="w-7 h-7 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">2</div>
+                    <div>
+                        <h3 class="font-bold text-slate-700 text-sm">Phần 2: Hoàn thành đoạn hội thoại</h3>
+                        <p class="text-xs text-slate-500">Chọn từ vựng phù hợp từ hộp từ vựng để điền vào chỗ trống trong các câu hội thoại.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="startGame()" class="w-full py-4 bg-gradient-to-r from-rose-500 to-pink-500 text-white font-bold rounded-2xl shadow-lg shadow-rose-300 hover:from-rose-600 hover:to-pink-600 transform hover:-translate-y-0.5 transition duration-200 text-lg flex items-center justify-center space-x-2">
+                <span>Bắt đầu chinh phục</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- MÀN HÌNH PHẦN 1: NỐI TRANH VỚI TỪ VỰNG -->
+        <div id="screen-part1" class="hidden bg-white rounded-3xl p-6 md:p-8 shadow-xl shadow-rose-100 border border-rose-100 max-w-3xl mx-auto w-full">
+            <div class="flex justify-between items-center mb-6 border-b border-rose-100 pb-4">
+                <div>
+                    <span class="bg-rose-100 text-rose-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Phần 1 / 2</span>
+                    <h2 class="text-xl font-bold text-slate-800 mt-1">Nối tranh với từ vựng phù hợp</h2>
+                </div>
+                <div class="text-xs font-bold text-slate-400">Tiến độ: <span id="p1-progress" class="text-rose-500 text-sm">0/6</span></div>
+            </div>
+
+            <p class="text-xs md:text-sm text-slate-500 mb-6 bg-rose-50 p-3 rounded-xl border border-rose-100 flex items-center space-x-2">
+                <i class="fa-solid fa-circle-info text-rose-500 text-base"></i>
+                <span>Hãy chọn một bức tranh (A-F), sau đó bấm vào từ vựng tương ứng ở bên dưới để ghép cặp.</span>
+            </p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6" id="images-grid">
+                <!-- Sẽ được render bằng JS -->
+            </div>
+
+            <div class="border-t border-slate-100 pt-4">
+                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3">Danh sách từ vựng:</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="words-grid">
+                    <!-- Sẽ được render bằng JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- MÀN HÌNH PHẦN 2: ĐIỀN TỪ VÀO CHỖ TRỐNG -->
+        <div id="screen-part2" class="hidden bg-white rounded-3xl p-6 md:p-8 shadow-xl shadow-rose-100 border border-rose-100 max-w-3xl mx-auto w-full">
+            <div class="flex justify-between items-center mb-6 border-b border-rose-100 pb-4">
+                <div>
+                    <span class="bg-rose-100 text-rose-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Phần 2 / 2</span>
+                    <h2 class="text-xl font-bold text-slate-800 mt-1">Điền từ vào chỗ trống hội thoại</h2>
+                </div>
+                <div class="text-xs font-bold text-slate-400">Tiến độ: <span id="p2-progress" class="text-rose-500 text-sm">1/4</span></div>
+            </div>
+
+            <!-- Ngân hàng từ vựng -->
+            <div class="mb-6 bg-rose-50/70 p-4 rounded-2xl border border-rose-100">
+                <h3 class="text-xs font-bold text-rose-600 uppercase mb-3 flex items-center space-x-1">
+                    <i class="fa-solid fa-box-archive"></i>
+                    <span>Hộp từ vựng gợi ý:</span>
+                </h3>
+                <div class="flex flex-wrap gap-2.5" id="word-bank">
+                    <!-- Sẽ được render bằng JS -->
+                </div>
+            </div>
+
+            <!-- Câu hỏi hội thoại hiện tại -->
+            <div id="dialogue-container" class="bg-slate-50 p-6 rounded-2xl border border-slate-200 mb-6 min-h-[160px] flex flex-col justify-center">
+                <!-- Sẽ được render bằng JS -->
+            </div>
+
+            <div class="flex justify-between items-center">
+                <button onclick="clearCurrentAnswer()" class="px-4 py-2 bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm hover:bg-slate-300 transition">
+                    Xóa lựa chọn
+                </button>
+                <button onclick="submitDialogueAnswer()" id="submit-dialogue-btn" class="px-6 py-2 bg-rose-500 text-white font-semibold rounded-xl text-sm hover:bg-rose-600 transition shadow-md shadow-rose-200">
+                    Xác nhận đáp án
+                </button>
+            </div>
+        </div>
+
+        <!-- MÀN HÌNH KẾT QUẢ -->
+        <div id="screen-result" class="hidden bg-white rounded-3xl p-6 md:p-10 shadow-xl shadow-rose-100 border border-rose-100 text-center max-w-xl mx-auto w-full">
+            <div class="w-24 h-24 bg-amber-400 rounded-full mx-auto flex items-center justify-center text-white text-4xl shadow-lg shadow-amber-200 mb-6 animate-pulse">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-2">Tuyệt vời! Hoàn thành xuất sắc</h2>
+            <p class="text-slate-500 text-sm mb-6">Bạn đã hoàn thành các thử thách từ vựng HSK 4 rất nhanh chóng.</p>
+
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="bg-rose-50 p-4 rounded-2xl border border-rose-100">
+                    <span class="text-xs text-slate-400 font-semibold uppercase block mb-1">Tổng điểm số</span>
+                    <span id="final-score" class="text-3xl font-black text-rose-600">0</span>
+                    <span class="text-xs text-slate-500"> / 100 điểm</span>
+                </div>
+                <div class="bg-rose-50 p-4 rounded-2xl border border-rose-100">
+                    <span class="text-xs text-slate-400 font-semibold uppercase block mb-1">Thời gian hoàn thành</span>
+                    <span id="final-time" class="text-3xl font-black text-rose-600">00:00</span>
+                </div>
+            </div>
+
+            <div class="flex space-x-3">
+                <button onclick="restartGame()" class="flex-1 py-3.5 bg-gradient-to-r from-rose-500 to-pink-500 text-white font-bold rounded-2xl shadow-lg shadow-rose-300 hover:from-rose-600 hover:to-pink-600 transition text-base">
+                    <i class="fa-solid fa-rotate-right mr-2"></i> Chơi lại từ đầu
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center py-4 text-xs text-slate-400 border-t border-rose-100 bg-white/50">
+        Chinh phục AI nhanh hơn • Luyện thi HSK 4 tiếng Trung tương tác
+    </footer>
+
+    <script>
+        // --- DỮ LIỆU TRÒ CHƠI ---
+        const part1Data = [
+            { id: 'A', word: '按时', vietnamese: 'Đúng giờ', desc: 'Đồng hồ hẹn giờ / Nhân viên giao hàng đúng giờ', imgUrl: 'https://images.unsplash.com/photo-1508962914676-134849a727f0?auto=format&fit=crop&w=300&q=80' },
+            { id: 'B', word: '赚钱', vietnamese: 'Kiếm tiền', desc: 'Đếm tiền', imgUrl: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=300&q=80' },
+            { id: 'C', word: '手忙脚乱', vietnamese: 'Tay chân bận rộn / Luống cuống', desc: 'Công việc ngập đầu', imgUrl: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=300&q=80' },
+            { id: 'D', word: '感谢', vietnamese: 'Cảm ơn', desc: 'Tặng quà / Cảm ơn', imgUrl: 'https://images.unsplash.com/photo-1543807535-eceef0bc6599?auto=format&fit=crop&w=300&q=80' },
+            { id: 'E', word: '知识', vietnamese: 'Kiến thức', desc: 'Bộ não, biểu tượng học tập, tri thức', imgUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=300&q=80' },
+            { id: 'F', word: '谈生意', vietnamese: 'Bàn chuyện làm ăn / Kinh doanh', desc: 'Họp bàn kinh doanh', imgUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=300&q=80' }
+        ];
+
+        const part2Data = [
+            {
+                id: 6,
+                speakerA: "A: 希望我们的工作能让您满意。",
+                speakerBBefore: "B: 我非常满意，",
+                speakerBAfter: "都安排得很好。",
+                correctWord: "一切",
+                options: ["提前", "一切", "积累", "提醒", "保证"]
+            },
+            {
+                id: 7,
+                speakerA: "A: 这份调查明天上午交，你写好了吗？",
+                speakerBBefore: "B: 还差一点儿，您放心，我",
+                speakerBAfter: "明天9点前给您。",
+                correctWord: "保证",
+                options: ["提前", "一切", "积累", "提醒", "保证"]
+            },
+            {
+                id: 8,
+                speakerA: "A: 今天下午的会议",
+                speakerBBefore: "",
+                speakerBAfter: "一个小时，改在两点开。",
+                speakerB: "B: 我已经看到通知了，谢谢你。",
+                correctWord: "提醒",
+                options: ["提前", "一切", "积累", "提醒", "保证"]
+            },
+            {
+                id: 9,
+                speakerA: "A: 听说你大学二年级的时候就开始在这个公司工作了。",
+                speakerBBefore: "B: 是的，这让我",
+                speakerBAfter: "了很多工作经验。",
+                correctWord: "积累",
+                options: ["提前", "一切", "积累", "提醒", "保证"]
+            }
+        ];
+
+        // --- TRẠNG THÁI GAME ---
+        let gameState = {
+            score: 0,
+            startTime: null,
+            timerInterval: null,
+            soundEnabled: true,
+            // Phần 1 state
+            p1SelectedImage: null,
+            p1MatchedPairs: 0,
+            p1ShuffledWords: [],
+            // Phần 2 state
+            p2CurrentIndex: 0,
+            p2SelectedWord: null,
+            p2Answers: {}
+        };
+
+        // --- QUẢN LÝ ÂM THANH (Sử dụng Web Audio API để không phụ thuộc file ngoài) ---
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(type) {
+            if (!gameState.soundEnabled) return;
+            initAudio();
+            if (!audioCtx) return;
+
+            try {
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                let now = audioCtx.currentTime;
+                if (type === 'click') {
+                    osc.frequency.setValueAtTime(400, now);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                    osc.start(now);
+                    osc.stop(now + 0.1);
+                } else if (type === 'correct') {
+                    osc.frequency.setValueAtTime(587.33, now); // D5
+                    osc.frequency.setValueAtTime(880, now + 0.1); // A5
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(200, now);
+                    osc.frequency.setValueAtTime(150, now + 0.15);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'win') {
+                    let notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, i) => {
+                        let o = audioCtx.createOscillator();
+                        let g = audioCtx.createGain();
+                        o.connect(g);
+                        g.connect(audioCtx.destination);
+                        o.frequency.setValueAtTime(freq, now + i * 0.1);
+                        g.gain.setValueAtTime(0.15, now + i * 0.1);
+                        g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.1 + 0.3);
+                        o.start(now + i * 0.1);
+                        o.stop(now + i * 0.1 + 0.3);
+                    });
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        function toggleSound() {
+            gameState.soundEnabled = !gameState.soundEnabled;
+            let icon = document.getElementById('sound-icon');
+            if (gameState.soundEnabled) {
+                icon.className = "fa-solid fa-volume-high";
+            } else {
+                icon.className = "fa-solid fa-volume-xmark";
+            }
+        }
+
+        // --- ĐIỀU KHIỂN GAME & ĐỒNG HỒ ---
+        function startGame() {
+            initAudio();
+            playSound('click');
+            document.getElementById('screen-welcome').classList.add('hidden');
+            document.getElementById('score-board').classList.remove('hidden');
+            document.getElementById('timer-board').classList.remove('hidden');
+
+            gameState.score = 0;
+            gameState.startTime = Date.now();
+            updateScoreDisplay();
+            startTimer();
+
+            initPart1();
+        }
+
+        function startTimer() {
+            if (gameState.timerInterval) clearInterval(gameState.timerInterval);
+            gameState.timerInterval = setInterval(() => {
+                let diff = Math.floor((Date.now() - gameState.startTime) / 1000);
+                let mins = Math.floor(diff / 60).toString().padStart(2, '0');
+                let secs = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('current-time').innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('current-score').innerText = gameState.score;
+        }
+
+        // --- PHẦN 1: LOGIC NỐI TRANH ---
+        function initPart1() {
+            document.getElementById('screen-part1').classList.remove('hidden');
+            gameState.p1SelectedImage = null;
+            gameState.p1MatchedPairs = 0;
+            
+            // Xáo trộn danh sách từ vựng
+            gameState.p1ShuffledWords = [...part1Data].sort(() => Math.random() - 0.5);
+            
+            renderPart1UI();
+        }
+
+        function renderPart1UI() {
+            document.getElementById('p1-progress').innerText = `${gameState.p1MatchedPairs}/6`;
+
+            // Render hình ảnh (A, B, C, D, E, F)
+            let imgGrid = document.getElementById('images-grid');
+            imgGrid.innerHTML = '';
+            part1Data.forEach(item => {
+                let isMatched = item.matched;
+                let isSelected = gameState.p1SelectedImage === item.id;
+                
+                let card = document.createElement('div');
+                card.className = `relative rounded-2xl overflow-hidden border-2 transition-all duration-200 cursor-pointer ${
+                    isMatched ? 'opacity-40 border-emerald-400 bg-emerald-50 pointer-events-none' : 
+                    isSelected ? 'border-rose-500 ring-4 ring-rose-200 scale-102 shadow-lg' : 'border-slate-200 hover:border-rose-300 bg-white shadow-sm'
+                }`;
+                card.onclick = () => selectPart1Image(item.id);
+
+                card.innerHTML = `
+                    <div class="absolute top-2 left-2 z-10 w-7 h-7 rounded-full bg-rose-600 text-white font-bold flex items-center justify-center text-xs shadow">
+                        ${item.id}
+                    </div>
+                    <div class="h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+                        <img src="${item.imgUrl}" alt="Hình ${item.id}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/300x200/ffe4e6/f43f5e?text=Tranh+${item.id}'">
+                    </div>
+                    <div class="p-2 text-center bg-white">
+                        <span class="text-xs font-semibold text-slate-600 block truncate">${item.desc}</span>
+                    </div>
+                    ${isMatched ? '<div class="absolute inset-0 bg-emerald-500/20 flex items-center justify-center"><i class="fa-solid fa-check text-emerald-600 text-3xl font-black"></i></div>' : ''}
+                `;
+                imgGrid.appendChild(card);
+            });
+
+            // Render từ vựng
+            let wordGrid = document.getElementById('words-grid');
+            wordGrid.innerHTML = '';
+            gameState.p1ShuffledWords.forEach(item => {
+                let isMatched = item.matched;
+                let btn = document.createElement('button');
+                btn.className = `py-3 px-4 rounded-xl font-bold text-base transition-all duration-200 border ${
+                    isMatched ? 'bg-emerald-50 border-emerald-300 text-emerald-700 opacity-50 cursor-not-allowed' :
+                    'bg-white border-slate-200 hover:border-rose-400 hover:bg-rose-50 text-slate-700 shadow-sm'
+                }`;
+                btn.disabled = isMatched;
+                btn.onclick = () => selectPart1Word(item.word);
+                btn.innerHTML = `<span class="chinese-font text-lg text-rose-600">${item.word}</span>`;
+                wordGrid.appendChild(btn);
+            });
+        }
+
+        function selectPart1Image(id) {
+            playSound('click');
+            let item = part1Data.find(x => x.id === id);
+            if (item.matched) return;
+            gameState.p1SelectedImage = id;
+            renderPart1UI();
+        }
+
+        function selectPart1Word(word) {
+            playSound('click');
+            if (!gameState.p1SelectedImage) {
+                showToast("Vui lòng chọn một bức tranh trước!", "warning");
+                return;
+            }
+
+            let imgItem = part1Data.find(x => x.id === gameState.p1SelectedImage);
+            let wordItem = part1Data.find(x => x.word === word);
+
+            if (imgItem.word === wordItem.word) {
+                // Đúng cặp
+                playSound('correct');
+                imgItem.matched = true;
+                wordItem.matched = true;
+                gameState.p1MatchedPairs++;
+                gameState.score += 10;
+                updateScoreDisplay();
+                gameState.p1SelectedImage = null;
+
+                if (gameState.p1MatchedPairs === 6) {
+                    setTimeout(() => {
+                        // Chuyển sang phần 2
+                        document.getElementById('screen-part1').classList.add('hidden');
+                        initPart2();
+                    }, 800);
+                } else {
+                    renderPart1UI();
+                }
+            } else {
+                // Sai cặp
+                playSound('wrong');
+                showToast("Chưa chính xác, hãy thử lại nhé!", "error");
+                gameState.p1SelectedImage = null;
+                renderPart1UI();
+            }
+        }
+
+        // --- PHẦN 2: LOGIC ĐIỀN TỪ HỘI THOẠI ---
+        function initPart2() {
+            document.getElementById('screen-part2').classList.remove('hidden');
+            gameState.p2CurrentIndex = 0;
+            gameState.p2SelectedWord = null;
+            gameState.p2Answers = {};
+            renderPart2UI();
+        }
+
+        function renderPart2UI() {
+            let currentQ = part2Data[gameState.p2CurrentIndex];
+            document.getElementById('p2-progress').innerText = `${gameState.p2CurrentIndex + 1}/${part2Data.length}`;
+
+            // Render hộp từ vựng
+            let bankContainer = document.getElementById('word-bank');
+            bankContainer.innerHTML = '';
+            currentQ.options.forEach(word => {
+                let isSelected = gameState.p2SelectedWord === word;
+                let btn = document.createElement('button');
+                btn.className = `chinese-font px-4 py-2 rounded-xl text-lg font-bold transition-all duration-200 border ${
+                    isSelected ? 'bg-rose-500 text-white border-rose-600 shadow-md transform -translate-y-0.5' :
+                    'bg-white text-rose-600 border-rose-200 hover:bg-rose-100 shadow-sm'
+                }`;
+                btn.onclick = () => selectPart2Word(word);
+                btn.innerText = word;
+                bankContainer.appendChild(btn);
+            });
+
+            // Render hội thoại
+            let dialogueContainer = document.getElementById('dialogue-container');
+            let chosenWordDisplay = gameState.p2SelectedWord ? `<span class="chinese-font text-rose-600 border-b-2 border-rose-500 px-2 font-bold">${gameState.p2SelectedWord}</span>` : `<span class="text-slate-300 border-b-2 border-dashed border-slate-300 px-3 select-none">( bấm chọn từ )</span>`;
+            
+            let htmlContent = `
+                <div class="space-y-3">
+                    <div class="text-slate-700 font-medium text-sm md:text-base">${currentQ.speakerA}</div>
+            `;
+            
+            if (currentQ.speakerB) {
+                htmlContent += `<div class="text-slate-700 font-medium text-sm md:text-base">${currentQ.speakerB}</div>`;
+            } else {
+                htmlContent += `
+                    <div class="text-slate-700 font-medium text-sm md:text-base flex flex-wrap items-center gap-1">
+                        <span>${currentQ.speakerBBefore}</span>
+                        <div onclick="clearCurrentAnswer()" class="inline-block cursor-pointer">${chosenWordDisplay}</div>
+                        <span>${currentQ.speakerBAfter}</span>
+                    </div>
+                `;
+            }
+            htmlContent += `</div>`;
+            dialogueContainer.innerHTML = htmlContent;
+        }
+
+        function selectPart2Word(word) {
+            playSound('click');
+            gameState.p2SelectedWord = word;
+            renderPart2UI();
+        }
+
+        function clearCurrentAnswer() {
+            playSound('click');
+            gameState.p2SelectedWord = null;
+            renderPart2UI();
+        }
+
+        function submitDialogueAnswer() {
+            if (!gameState.p2SelectedWord) {
+                showToast("Vui lòng chọn một từ vựng để điền vào chỗ trống!", "warning");
+                return;
+            }
+
+            let currentQ = part2Data[gameState.p2CurrentIndex];
+            if (gameState.p2SelectedWord === currentQ.correctWord) {
+                playSound('correct');
+                gameState.score += 10;
+                updateScoreDisplay();
+                showToast("Chính xác!", "success");
+
+                setTimeout(() => {
+                    gameState.p2CurrentIndex++;
+                    gameState.p2SelectedWord = null;
+                    if (gameState.p2CurrentIndex < part2Data.length) {
+                        renderPart2UI();
+                    } else {
+                        finishGame();
+                    }
+                }, 800);
+            } else {
+                playSound('wrong');
+                showToast("Chưa đúng rồi, hãy thử từ khác nhé!", "error");
+                gameState.p2SelectedWord = null;
+                renderPart2UI();
+            }
+        }
+
+        // --- KẾT THÚC GAME & PHÁO HOA ---
+        function finishGame() {
+            if (gameState.timerInterval) clearInterval(gameState.timerInterval);
+            document.getElementById('screen-part2').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+
+            // Hiển thị tổng điểm và thời gian
+            document.getElementById('final-score').innerText = gameState.score;
+            let diff = Math.floor((Date.now() - gameState.startTime) / 1000);
+            let mins = Math.floor(diff / 60).toString().padStart(2, '0');
+            let secs = (diff % 60).toString().padStart(2, '0');
+            document.getElementById('final-time').innerText = `${mins}:${secs}`;
+
+            playSound('win');
+            triggerFireworks();
+        }
+
+        function triggerFireworks() {
+            try {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        function restartGame() {
+            playSound('click');
+            // Reset dữ liệu matched
+            part1Data.forEach(item => item.matched = false);
+            
+            document.getElementById('screen-result').classList.add('hidden');
+            document.getElementById('score-board').classList.add('hidden');
+            document.getElementById('timer-board').classList.add('hidden');
+            document.getElementById('screen-welcome').classList.remove('hidden');
+        }
+
+        // --- THÔNG BÁO NHỎ (TOAST) ---
+        function showToast(message, type = 'info') {
+            let existingToast = document.getElementById('custom-toast');
+            if (existingToast) existingToast.remove();
+
+            let toast = document.createElement('div');
+            let bgColor = type === 'success' ? 'bg-emerald-600' : type === 'error' ? 'bg-rose-600' : 'bg-amber-600';
+            toast.id = 'custom-toast';
+            toast.className = `fixed bottom-6 left-1/2 transform -translate-x-1/2 ${bgColor} text-white px-5 py-3 rounded-2xl shadow-xl font-bold text-sm z-50 flex items-center space-x-2 transition-all duration-300 animate-bounce`;
+            toast.innerHTML = `
+                <i class="fa-solid ${type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-circle-exclamation' : 'fa-triangle-exclamation'}"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                if (toast && toast.parentNode) {
+                    toast.remove();
+                }
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
